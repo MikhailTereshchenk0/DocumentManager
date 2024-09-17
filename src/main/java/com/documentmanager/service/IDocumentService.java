@@ -3,11 +3,12 @@ package com.documentmanager.service;
 import com.documentmanager.model.Document;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IDocumentService {
     void create(Document document);
     List<Document> readAllDocuments();
-    Document read(int id);
-    boolean update(int id);
-    boolean delete(int id);
+    Optional<Document> read(String id);
+    boolean update(String id);
+    void delete(String id);
 }

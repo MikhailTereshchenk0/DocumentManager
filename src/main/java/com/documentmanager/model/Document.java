@@ -1,11 +1,14 @@
 package com.documentmanager.model;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.annotation.Id;
 
-@Data
-@Builder
+@Getter
+@Setter
+@org.springframework.data.mongodb.core.mapping.Document("documents")
 public class Document {
-    private int id;
-    private String Title;
+    @Id
+    private String id;
+    private String title;
 }

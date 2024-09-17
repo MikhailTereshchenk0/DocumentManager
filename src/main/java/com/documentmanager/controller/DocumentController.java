@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/documents")
@@ -33,21 +34,22 @@ public class DocumentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Document> read(@PathVariable("id") int id) {
-        final Document document = documentService.read(id);
-        if (document != null) return new ResponseEntity<>(document, HttpStatus.OK);
-        else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Document> read(@PathVariable("id") String id) {
+        final Optional<Document> optDocument = documentService.read(id);
+        if (optDocument.isPresent()) {
+            Document document = optDocument.get();
+            return new ResponseEntity<>(document, HttpStatus.OK);
+        } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") int id) {
+    public ResponseEntity<?> update(@PathVariable("id") String id) {
         if (documentService.update(id)) return new ResponseEntity<>(HttpStatus.OK);
         else return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") int id) {
-        if (documentService.delete(id)) return new ResponseEntity<>(HttpStatus.OK);
-        else return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    public void delete(@PathVariable("id") String id) {
+        documentService.delete(id);
     }
 }
