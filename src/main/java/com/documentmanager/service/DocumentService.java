@@ -2,21 +2,17 @@ package com.documentmanager.service;
 
 import com.documentmanager.model.Document;
 import com.documentmanager.repository.IDocumentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class DocumentServiceImpl implements IDocumentService {
+@RequiredArgsConstructor
+public class DocumentService implements IDocumentService {
 
     private final IDocumentRepository documentRepository;
-
-    @Autowired
-    public DocumentServiceImpl(IDocumentRepository documentRepository) {
-        this.documentRepository = documentRepository;
-    }
 
     @Override
     public void create(Document document) {
@@ -24,23 +20,27 @@ public class DocumentServiceImpl implements IDocumentService {
     }
 
     @Override
-    public List<Document> readAllDocuments() {
+    public List<Document> findAll() {
         return documentRepository.findAll();
     }
 
     @Override
-    public Optional<Document> read(String id) {
+    public Optional<Document> findById(String id) {
         return documentRepository.findById(id);
     }
 
     @Override
-    public boolean update(String id) {
-        return false;
-        //todo
+    public boolean update(Document document) {
+        Optional<Document> documentOpt = documentRepository.findById(document.getId());
+        if (documentOpt.isEmpty()) return false;
+        Document newDocument = documentOpt.get();
+        newDocument.setId(document.getId());
+        newDocument.setTitle(document.getTitle());
+        return true;
     }
 
     @Override
-    public void delete(String id) {
+    public void deleteById(String id) {
         documentRepository.deleteById(id);
     }
 }

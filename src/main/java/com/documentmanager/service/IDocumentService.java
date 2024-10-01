@@ -7,8 +7,8 @@ import java.util.Optional;
 
 public interface IDocumentService {
     void create(Document document);
-    List<Document> readAllDocuments();
-    Optional<Document> read(String id);
-    boolean update(String id);
-    void delete(String id);
+    List<Document> findAll();
+    Optional<Document> findById(String id);
+    boolean update(Document document);
+    void deleteById(String id);
 }
