@@ -20,7 +20,6 @@ public class AdminController {
     @GetMapping("/users")
     public ResponseEntity<?> findAllUsers() {
         List<User> users = userService.findAll();
-        if (users == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 }

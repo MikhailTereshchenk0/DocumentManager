@@ -1,5 +1,6 @@
 package com.documentmanager.service;
 
+import com.documentmanager.exception.NotFoundException;
 import com.documentmanager.model.Document;
 import com.documentmanager.repository.IDocumentRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,22 +26,26 @@ public class DocumentService implements IDocumentService {
     }
 
     @Override
-    public Optional<Document> findById(String id) {
-        return documentRepository.findById(id);
+    public Document findById(String id) {
+        Optional<Document> document = documentRepository.findById(id);
+        if (document.isEmpty())
+            throw new NotFoundException("Document Not Found.");
+        return document.get();
     }
 
     @Override
-    public boolean update(Document document) {
+    public void update(Document document) {
         Optional<Document> documentOpt = documentRepository.findById(document.getId());
-        if (documentOpt.isEmpty()) return false;
+        if (documentOpt.isEmpty())
+            throw new NotFoundException("Document Not Found.");
         Document newDocument = documentOpt.get();
-        newDocument.setId(document.getId());
         newDocument.setTitle(document.getTitle());
-        return true;
     }
 
     @Override
     public void deleteById(String id) {
+        if (!documentRepository.existsById(id))
+            throw new NotFoundException("Document Not Found.");
         documentRepository.deleteById(id);
     }
 }
