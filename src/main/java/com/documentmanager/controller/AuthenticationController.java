@@ -1,7 +1,6 @@
 package com.documentmanager.controller;
 
 import com.documentmanager.dto.JwtRequest;
-import com.documentmanager.service.AuthenticationService;
 import com.documentmanager.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
