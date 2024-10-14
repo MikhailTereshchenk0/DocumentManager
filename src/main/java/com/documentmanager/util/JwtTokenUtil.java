@@ -26,7 +26,7 @@ public class JwtTokenUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String GenerateToken(UserDetails principal) {
+    public String generateToken(UserDetails principal) {
         Map<String, Object> claims = new HashMap<>();
         List<String> roles = principal.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
