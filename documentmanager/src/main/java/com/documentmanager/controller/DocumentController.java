@@ -1,13 +1,11 @@
 package com.documentmanager.controller;
 
-import com.documentmanager.model.Document;
+import com.documentmanager.dto.DocumentDto;
 import com.documentmanager.service.IDocumentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/documents")
@@ -16,26 +14,24 @@ public class DocumentController {
     private final IDocumentService documentService;
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Document document) {
-        documentService.create(document);
+    public ResponseEntity<?> create(@RequestBody DocumentDto documentDto) {
+        documentService.create(documentDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Document>> findAll() {
-        final List<Document> documents = documentService.findAll();
-        return new ResponseEntity<>(documents, HttpStatus.OK);
+    public ResponseEntity<?> findAll() {
+        return new ResponseEntity<>(documentService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Document> find(@PathVariable("id") String id) {
-        Document document = documentService.findById(id);
-        return new ResponseEntity<>(document, HttpStatus.OK);
+    public ResponseEntity<?> find(@PathVariable("id") String id) {
+        return new ResponseEntity<>(documentService.findById(id), HttpStatus.OK);
     }
 
     @PutMapping()
-    public ResponseEntity<?> update(@RequestBody Document document) {
-        documentService.update(document);
+    public ResponseEntity<?> update(@RequestBody DocumentDto documentDto) {
+        documentService.update(documentDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

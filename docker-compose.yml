@@ -21,11 +21,41 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: users
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
+  zookeeper:
+    image: docker.io/bitnami/zookeeper:3.9
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    volumes:
+      - "zookeeper_data:/bitnami"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  kafka:
+    image: docker.io/bitnami/kafka:3.4
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    expose:
+      - "9093"
+    volumes:
+      - "kafka_data:/bitnami"
+    environment:
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_ADVERTISED_LISTENERS: OUTSIDE://localhost:9092,INSIDE://kafka:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: OUTSIDE:PLAINTEXT,INSIDE:PLAINTEXT
+      KAFKA_LISTENERS: OUTSIDE://0.0.0.0:9092,INSIDE://0.0.0.0:9093
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+    depends_on:
+      - zookeeper
 
 volumes:
   mongo-data:
   postgres-data:
+  zookeeper_data:
+  kafka_data:
