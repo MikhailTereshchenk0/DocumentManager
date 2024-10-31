@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -25,7 +26,7 @@ public class TextDocumentService implements ITextDocumentService {
     }
 
     @Override
-    public TextDocument findById(String id) {
+    public TextDocument findById(UUID id) {
         Optional<TextDocument> document = textDocumentRepository.findById(id);
         if (document.isEmpty())
             throw new NotFoundException("Document Not Found.");
@@ -42,7 +43,7 @@ public class TextDocumentService implements ITextDocumentService {
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteById(UUID id) {
         if (!textDocumentRepository.existsById(id))
             throw new NotFoundException("Document Not Found.");
         textDocumentRepository.deleteById(id);

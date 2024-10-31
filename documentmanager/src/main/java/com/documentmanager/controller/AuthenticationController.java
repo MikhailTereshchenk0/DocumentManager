@@ -17,7 +17,7 @@ public class AuthenticationController {
     private final UserService userService;
 
     @PostMapping()
-    public ResponseEntity<?> createToken(@RequestBody JwtRequest jwtRequest) {
+    public ResponseEntity<?> signIn(@RequestBody JwtRequest jwtRequest) {
         return new ResponseEntity<>(userService.login(jwtRequest), HttpStatus.OK);
     }
 }

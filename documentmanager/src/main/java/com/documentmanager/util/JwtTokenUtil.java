@@ -1,5 +1,6 @@
 package com.documentmanager.util;
 
+import com.documentmanager.config.UserDetailsImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -26,12 +27,13 @@ public class JwtTokenUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(UserDetails principal) {
+    public String generateToken(UserDetailsImpl principal) {
         Map<String, Object> claims = new HashMap<>();
         List<String> roles = principal.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList();
         claims.put("roles", roles);
+        claims.put("id", principal.getId());
         return Jwts.builder()
                 .claims(claims)
                 .subject(principal.getUsername())
@@ -40,6 +42,10 @@ public class JwtTokenUtil {
                 .signWith(getSigningKey())
                 .compact();
 
+    }
+
+    public String getId(String token) {
+        return getClaims(token).getId();
     }
 
     public String getUsername(String token) {

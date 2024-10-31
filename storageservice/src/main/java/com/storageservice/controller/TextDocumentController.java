@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/documents")
@@ -22,7 +23,7 @@ public class TextDocumentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TextDocument> find(@PathVariable("id") String id) {
+    public ResponseEntity<TextDocument> find(@PathVariable("id") UUID id) {
         TextDocument document = textDocumentService.findById(id);
         return new ResponseEntity<>(document, HttpStatus.OK);
     }
@@ -34,7 +35,7 @@ public class TextDocumentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") String id) {
+    public ResponseEntity<?> delete(@PathVariable("id") UUID id) {
         textDocumentService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

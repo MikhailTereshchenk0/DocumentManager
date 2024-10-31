@@ -14,7 +14,7 @@ public class RegistrationController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody User user) {
+    public ResponseEntity<?> signUp(@RequestBody User user) {
         return new ResponseEntity<>(userService.register(user), HttpStatus.CREATED);
     }
 }

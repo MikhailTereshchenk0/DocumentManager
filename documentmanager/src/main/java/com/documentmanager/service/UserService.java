@@ -27,21 +27,29 @@ public class UserService {
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsServiceImpl userDetailsService;
 
-    public Optional<User> findById(Long id) {
+    public User findById(Long id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty())
             throw new NotFoundException("User Not Found.");
-        return user;
+        return user.get();
+    }
+
+    public User findByUsername(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isEmpty())
+            throw new NotFoundException("User Not Found.");
+        return user.get();
     }
 
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    public void save(User user) {
+    private void save(User user) {
         if (userRepository.findByUsername(user.getUsername()).isPresent())
             throw new BadRequestException("User " + user.getUsername() + " Already Exists.");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles("ROLE_USER");
         userRepository.save(user);
     }
 
